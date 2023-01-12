@@ -92,7 +92,7 @@ class FileSystem:
             print("There is no such directory")
             return False
 
-    def create_binary_file(self, path: str, fileName: str, content: str) -> bool:
+    def create_binary_file(self, path: str, fileName: str, content: str = 'Lab1') -> bool:
         if fileName.endswith(".bin"):
             if path != "/":
                 if self.check_ancestor_dir(path):
