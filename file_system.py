@@ -98,9 +98,9 @@ class FileSystem:
                 if self.check_ancestor_dir(path):
                     if fileName not in self.paths[path]:
                         if len(self.paths[path]) < self.MAX_DIR_ELEMENTS:
-                            filePath = path + "/" + fileName
+                            file_path = path + "/" + fileName
                             bisect.insort(self.paths[path], fileName)
-                            self.binfiles[filePath] = content
+                            self.binfiles[file_path] = content
                             return True
                         else:
                             print("Directory is already full")
@@ -117,33 +117,33 @@ class FileSystem:
             print("You've entered the Incorrect file name")
             return False
 
-    def delete_binary_file(self, filePath: str) -> bool:
-        if filePath in self.binfiles:
-            directories = filePath.split("/")
+    def delete_binary_file(self, file_path: str) -> bool:
+        if file_path in self.binfiles:
+            directories = file_path.split("/")
 
             dir_path = "/".join(directories[:-1])
             self.paths[dir_path].remove(directories[len(directories) - 1])
-            self.binfiles.pop(filePath)
+            self.binfiles.pop(file_path)
             return True
         else:
             print("File doesn't exist")
             return False
 
-    def read_binary_file(self, filePath: str) -> str:
-        if filePath in self.binfiles:
-            return self.binfiles[filePath]
+    def read_binary_file(self, file_path: str) -> str:
+        if file_path in self.binfiles:
+            return self.binfiles[file_path]
         else:
             print("File doesn't exist")
             return None
 
-    def move_binary_file(self, filePath: str, pathTo: str) -> bool:
-        if filePath in self.binfiles:
-            dirs = filePath.split("/")
+    def move_binary_file(self, file_path: str, pathTo: str) -> bool:
+        if file_path in self.binfiles:
+            dirs = file_path.split("/")
             file_name = dirs[len(dirs) - 1]
 
             if file_name not in self.paths[pathTo]:
                 if len(self.paths[pathTo]) < self.MAX_DIR_ELEMENTS:
-                    self.delete_binary_file(filePath)
+                    self.delete_binary_file(file_path)
                     self.create_binary_file(pathTo, file_name)
                     return True
                 else:
@@ -181,52 +181,52 @@ class FileSystem:
             print("You've entered the Incorrect file name")
             return False
 
-    def delete_log_file(self, filePath: str) -> bool:
-        if filePath in self.logfiles:
-            directories = filePath.split("/")
+    def delete_log_file(self, file_path: str) -> bool:
+        if file_path in self.logfiles:
+            directories = file_path.split("/")
             dir_path = "/".join(directories[:-1])
             self.paths[dir_path].remove(directories[len(directories) - 1])
-            self.logfiles.pop(filePath)
+            self.logfiles.pop(file_path)
             return True
         else:
             print("File doesn't exist")
             return False
 
-    def append_text(self, filePath: str, text: str) -> bool:
-        if filePath not in self.logfiles:
-            dirs = filePath.split("/")
+    def append_text(self, file_path: str, text: str) -> bool:
+        if file_path not in self.logfiles:
+            dirs = file_path.split("/")
             file_name = dirs[len(dirs) - 1]
             dir_path = "/".join(dirs[:-1])
             b = self.create_log_file(dir_path, file_name)
             if not b:
                 return False
 
-        if self.logfiles[filePath] != "":
-            self.logfiles[filePath] += "\n\r"
-        self.logfiles[filePath] += text
-        if text in self.logfiles[filePath]:
+        if self.logfiles[file_path] != "":
+            self.logfiles[file_path] += "\n\r"
+        self.logfiles[file_path] += text
+        if text in self.logfiles[file_path]:
             return True
         else:
             print("Error: Something went wrong")
             return False
 
-    def read_log_file(self, filePath: str) -> str:
-        if filePath in self.logfiles:
-            return self.logfiles[filePath]
+    def read_log_file(self, file_path: str) -> str:
+        if file_path in self.logfiles:
+            return self.logfiles[file_path]
         else:
             print("File doesn't exist")
             return None
 
-    def move_log_file(self, filePath: str, pathTo: str) -> bool:
-        if filePath in self.logfiles:
-            dirs = filePath.split("/")
+    def move_log_file(self, file_path: str, pathTo: str) -> bool:
+        if file_path in self.logfiles:
+            dirs = file_path.split("/")
             file_name = dirs[len(dirs) - 1]
 
             if file_name not in self.logfiles[pathTo]:
-                text = self.logfiles[filePath]
+                text = self.logfiles[file_path]
 
                 if len(self.paths[pathTo]) < self.MAX_DIR_ELEMENTS:
-                    self.delete_log_file(filePath)
+                    self.delete_log_file(file_path)
                     self.create_log_file(pathTo, file_name)
 
                     new_file_path = pathTo + "/" + file_name
@@ -247,9 +247,9 @@ class FileSystem:
                 if self.check_ancestor_dir(path):
                     if fileName not in self.paths[path]:
                         if len(self.paths[path]) < self.MAX_DIR_ELEMENTS:
-                            filePath = path + "/" + fileName
+                            file_path = path + "/" + fileName
                             bisect.insort(self.paths[path], fileName)
-                            self.buffiles[filePath] = Queue(maxsize=self.MAX_BUF_FILE_SIZE)
+                            self.buffiles[file_path] = Queue(maxsize=self.MAX_BUF_FILE_SIZE)
                             return True
                         else:
                             print("Directory is already full")
@@ -266,51 +266,51 @@ class FileSystem:
             print("You've entered the Incorrect file name")
             return False
 
-    def delete_buf_file(self, filePath: str) -> bool:
-        if filePath in self.buffiles:
-            directories = filePath.split("/")
+    def delete_buf_file(self, file_path: str) -> bool:
+        if file_path in self.buffiles:
+            directories = file_path.split("/")
 
             dir_path = "/".join(directories[:-1])
             self.paths[dir_path].remove(directories[len(directories) - 1])
-            self.buffiles.pop(filePath)
+            self.buffiles.pop(file_path)
             return True
         else:
             print("File doesn't exist")
             return False
 
-    def push_to_buf_file(self, filePath: str, elem) -> bool:
-        if filePath not in self.buffiles:
-            dirs = filePath.split("/")
+    def push_to_buf_file(self, file_path: str, elem) -> bool:
+        if file_path not in self.buffiles:
+            dirs = file_path.split("/")
             file_name = dirs[len(dirs) - 1]
             dir_path = "/".join(dirs[:-1])
             b = self.create_buf_file(dir_path, file_name)
             if not b:
                 return False
-        if not self.buffiles[filePath].full():
-            self.buffiles[filePath].put(elem)
+        if not self.buffiles[file_path].full():
+            self.buffiles[file_path].put(elem)
             return True
         else:
             print("Queue is already full")
             return False
 
-    def consume_from_buf_file(self, filePath: str):
-        if filePath not in self.buffiles:
+    def consume_from_buf_file(self, file_path: str):
+        if file_path not in self.buffiles:
             print("File doesn't exist")
             return False
-        elif self.buffiles[filePath].empty():
+        elif self.buffiles[file_path].empty():
             print("Queue is already empty")
             return False
         else:
-            return self.buffiles[filePath].get()
+            return self.buffiles[file_path].get()
 
-    def move_buf_file(self, filePath: str, pathTo: str) -> bool:
-        if filePath in self.buffiles:
-            dirs = filePath.split("/")
+    def move_buf_file(self, file_path: str, pathTo: str) -> bool:
+        if file_path in self.buffiles:
+            dirs = file_path.split("/")
             file_name = dirs[len(dirs) - 1]
 
             if file_name not in self.paths[pathTo]:
                 if len(self.paths[pathTo]) < self.MAX_DIR_ELEMENTS:
-                    self.delete_buf_file(filePath)
+                    self.delete_buf_file(file_path)
                     self.create_buf_file(pathTo, file_name)
                     return True
                 else:
